@@ -2637,6 +2637,13 @@ class TypesTestsMixin:
         for n, (a, e) in enumerate(zip(actual, expected)):
             self.assertEqual(a, e, "%s does not match with %s" % (exprs[n], expected[n]))
 
+    def test_time_type_string_representations(self):
+        # typeName() must carry the precision like the JVM does (TimeType.scala returns
+        # "time(<precision>)"); the DataType.typeName classmethod would return just "time".
+        self.assertEqual("time(6)", TimeType().typeName())
+        self.assertEqual("time(9)", TimeType(9).typeName())
+        self.assertEqual(TimeType().simpleString(), TimeType().typeName())
+
     def test_timestamp_nanos_type(self):
         from pyspark.sql.types import _parse_datatype_string
 

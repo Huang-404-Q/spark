@@ -477,6 +477,12 @@ class TimeType(AnyTimeType):
     def simpleString(self) -> str:
         return "time(%d)" % (self.precision)
 
+    def typeName(self) -> str:  # type: ignore[override]
+        # Instance-level override of the DataType.typeName classmethod, whose default would derive
+        # "time" from the class name. Return simpleString() so the public type name carries the
+        # precision and matches the JVM (e.g. time(6)), as AnyTimestampNanoType does.
+        return self.simpleString()
+
     def jsonValue(self) -> str:
         return "time(%d)" % (self.precision)
 
